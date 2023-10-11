@@ -1,3 +1,4 @@
+//Creating event listener in about us button
 const aboutEl = document.getElementById("about")
 const  modelEl = document.querySelector(".model")
 
