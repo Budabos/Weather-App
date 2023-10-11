@@ -125,14 +125,17 @@ body{
 }
 
 .icon h1{
-    padding: 10px;
+    margin: 0;
+
     padding-top: 20px;
 }
 .icon p{
-    padding: 10px;
+    margin: 0;
+    font-size: 10px;
+    
 }
 
-.networks{
+.footer-section{
     display: flex;
     justify-content: space-around;
     padding-bottom: 2px;
@@ -141,6 +144,10 @@ body{
 
 
 
+}
+.networks i{
+    padding: 5px;
+    
 }
 
 
