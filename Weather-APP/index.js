@@ -15,12 +15,15 @@ aboutEl.addEventListener("click", () => {
 
 // Define your API key and API URL
 const apiKey = "05b0ecb5d9a854a2728535042c7b88f9";
-const apiUrl = "https://api.openweathermap.org/data/2.5/weather?units=metric&q=Nairobi";
+const apiUrl = "https://api.openweathermap.org/data/2.5/weather?units=metric&q=";
+
+const searchBox = document.querySelector(".search input");
+const searchBtn = document.querySelector(".search button");  
 
 // Define an asynchronous function to check the weather
-async function checkWeather() {
+async function checkWeather(city) {
     // Send a GET request to the OpenWeatherMap API with your API key
-    const response = await fetch(apiUrl + `&appid=${apiKey}`);
+    const response = await fetch(apiUrl + city + `&appid=${apiKey}`);
 
     // Parse the JSON response from the API
     let data = await response.json();
@@ -36,6 +39,12 @@ async function checkWeather() {
     document.querySelector(".wind").innerHTML = data.main.wind.speed + " km/h"; 
     
 }
+
+searchBtn.addEventListener("click", ()=>{
+  checkWeather(searchBox.value);
+})
+
+
 // Call the checkWeather function to initiate the weather check
 checkWeather();
 
