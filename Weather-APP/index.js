@@ -1,10 +1,38 @@
-//Creating event listener in about us button
-const aboutEl = document.getElementById("about")
-const  modelEl = document.querySelector(".model")
+// Get the DOM element with the ID "about" and store it in the variable "aboutEl"
+const aboutEl = document.getElementById("about");
 
+// Get the DOM element with the class "model" and store it in the variable "modelEl"
+const modelEl = document.querySelector(".model");
+
+// Add a click event listener to the "aboutEl" element
 aboutEl.addEventListener("click", () => {
+    // When "aboutEl" is clicked, show the modal associated with "modelEl"
     modelEl.showModal();
-}); 
+});
+
+
+
+
+// Define your API key and API URL
+const apiKey = "05b0ecb5d9a854a2728535042c7b88f9";
+const apiUrl = "https://api.openweathermap.org/data/2.5/weather?units=metric&q=Nairobi";
+
+// Define an asynchronous function to check the weather
+async function checkWeather() {
+    // Send a GET request to the OpenWeatherMap API with your API key
+    const response = await fetch(apiUrl + `&appid=${apiKey}`);
+
+    // Parse the JSON response from the API
+    let data = await response.json();
+
+    // Log the weather data to the console
+    console.log(data);
+}
+
+// Call the checkWeather function to initiate the weather check
+checkWeather();
+
+
 
 /*const aboutEl = document.querySelector("#about");
 const  modelEl = document.querySelectorAll(".model");
