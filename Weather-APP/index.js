@@ -27,8 +27,15 @@ async function checkWeather() {
 
     // Log the weather data to the console
     console.log(data);
-}
 
+    
+    // Update HTML elements with weather data received from the API response
+    document.querySelector(".city").innerHTML = data.name;
+    document.querySelector(".temp").innerHTML = Math.round(data.main.temp) + "°C"; 
+    document.querySelector(".humidity").innerHTML = data.main.humidity + "%"; 
+    document.querySelector(".wind").innerHTML = data.main.wind.speed + " km/h"; 
+    
+}
 // Call the checkWeather function to initiate the weather check
 checkWeather();
 
