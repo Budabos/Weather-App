@@ -187,12 +187,39 @@ body{
     border-radius: 50%;
     width: 60%;
     height: 60%;
-    padding: 50px  45px;
+    padding: 50px 45px;
     cursor: pointer;
 }
 .search button img{
     width: 16px;
 }
+.weather-icon{
+    width: 170px;
+    margin-top: 30px;
+}
+.weather h1{
+    font-size: 80px;
+    font-weight: 500px;
+
+}
+.weather h2{
+    font-size: 45px;
+    font-weight: 400px;
+    margin-top: -10px;
+}
+.details{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    margin-top: 50px;
+
+
+}
+
+
+
+
 
 
 
