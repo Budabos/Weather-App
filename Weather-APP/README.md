@@ -1,6 +1,16 @@
 ## Title of the Project
 Weather Mood Checker
 
+
+## Table Of Contents
+## Description
+## Project setup
+## Requirements
+## Usage
+## Author
+## collaborators
+## license
+
 ## Description of the Project
 The "Weather Mood Checker" is a web application designed to enhance your daily mood and activities by providing weather-related insights and recommendations. In today's fast-paced world, understanding how weather conditions can affect our emotions and plans is essential. This project aims to bridge that gap by offering an intuitive and user-friendly solution.
 
@@ -117,6 +127,17 @@ POST /toys
 GET /toys/:id
 PATCH /toys/:id
 DELETE /toys/:id
+
+## Author
+Caroline Akinyi Opiyo ("https://github.com/Budabos") Email: opiyocaroline20@gmail.com
+
+
+## Collaborators
+Nelson Murithi ("https://github.com/NellieMK65")
+
+
+## license
+License (" MIT License")
 
 
 
