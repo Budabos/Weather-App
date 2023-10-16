@@ -62,7 +62,7 @@ function renderPicture() {
 }
 
 let myHeaders = new Headers();
-myHeaders.append("X-Api-Key", "o71IHicXblHeovfGE0J0pA==FqM55J7liunZHpmV");
+myHeaders.append("X-Api-Key", "26eJIHt/sEgMl68YCYBiog==PB28IcPzdXc4Fe52");
 let requestOptions = {
   method: 'GET',
   headers: myHeaders,
