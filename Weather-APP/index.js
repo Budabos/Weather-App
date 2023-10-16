@@ -1,139 +1,188 @@
-// Get the DOM element with the ID "about" and store it in the variable "aboutEl"
-const aboutEl = document.getElementById("about");
+const aboutNav = document.getElementById("link-about")
+const modalLink = document.getElementById("modal")
+const cancelButton = document.getElementById("cancelAbout")
+let cloudpct = document.getElementById("precipitationvalue")
+let humidity = document.getElementById("humidityvalue")
+let wind = document.getElementById("windvalue")
+let inputEl = document.getElementById("input-el")
+let buttonEl = document.getElementById("button-el")
+let picture = document.getElementById("main-picture")
+let currentLocation = document.getElementById("current-location-value")
+let cloudRender = document.getElementById("cloud-render")
+let linkContact = document.getElementById("link-contact")
+const coffeeBtn = document.querySelector(".coffee-button")
+const cancelCoffee = document.getElementById("can-btn")
+const aboutModal = document.getElementById("about-modal")
+const aboutCancelBtn = document.getElementById("about-canel-btn")
+const contactCancel = document.getElementById("contactCancel")
+//about us modal page 
+aboutNav.addEventListener("click", function() {
+  aboutModal.showModal()
+})
 
-// Get the DOM element with the class "model" and store it in the variable "modelEl"
-const modelEl = document.querySelector(".model");
+aboutCancelBtn.addEventListener("click", function() {
+  aboutModal.close()
+})
+//contact us modal 
 
-// Add a click event listener to the "aboutEl" element
-aboutEl.addEventListener("click", () => {
-    // When "aboutEl" is clicked, show the modal associated with "modelEl"
-    modelEl.showModal();
-});
+linkContact.addEventListener("click", function() {
+  contactModal.showModal()
+})
+contactCancel.addEventListener("click", function() {
+  contactModal.close()
+})
 
+//buy me a coffee modal
+coffeeBtn.addEventListener("click", function() {
+  modalLink.showModal()
+})
 
-
-
-// Define your API key and API URL
-const apiKey = "05b0ecb5d9a854a2728535042c7b88f9";
-const apiUrl = "https://api.openweathermap.org/data/2.5/weather?units=metric&q=";
-
-const searchBox = document.querySelector(".search input");
-const searchBtn = document.querySelector(".search button");  
-const weatherIcon = document.querySelector(".weather-icon");
-
-
-// Define an asynchronous function to check the weather
-async function checkWeather(city) {
-  try {
-      // Send a GET request to the OpenWeatherMap API with your API key
-      const response = await fetch(apiUrl + city + `&appid=${apiKey}`);
-
-      // Check if the response status is okay (200)
-      if (response.status === 200) {
-          // Parse the JSON response from the API
-          let data = await response.json();
-
-          // Log the weather data to the console
-  
-
-          // Update HTML elements with weather data received from the API response
-          document.querySelector(".city").innerHTML = data.name;
-          document.querySelector(".temp").innerHTML = Math.round(data.main.temp) + "°C"; 
-          document.querySelector(".humidity").innerHTML = data.main.humidity + "%"; 
-          document.querySelector(".wind").innerHTML = data.wind.speed + " km/h"; 
-
-          // Check the weather condition and set the weather icon accordingly
-          if (data.weather[0].main == "Clouds") {
-              weatherIcon.src = "images/clouds.png";
-          } else if (data.weather[0].main == "Clear") {
-              weatherIcon.src = "images/clear.png"; 
-          } else if (data.weather[0].main == "Rain") {
-              weatherIcon.src = "images/rain.png"; 
-          }else if (data.weather[0].main == "Drizzle") {
-            weatherIcon.src = "images/drizzle.png"; 
-          }else if (data.weather[0].main == "Snow") {
-            weatherIcon.src = "images/snow.png"; 
-          }else if (data.weather[0].main == "wind") {
-            weatherIcon.src = "images/wind.png"; 
-          }else if (data.weather[0].main == "Mist") {
-            weatherIcon.src = "images/mist.png";
-          } 
-        
-      } else {
-          console.error("Response status is not 200.");
-      }
-  } catch (error) {
-      console.error("An error occurred:", error);
-  }
-
-  document.querySelector(".weather").style.display = "block"
-}
-
-searchBtn.addEventListener("click", ()=>{
-  checkWeather(searchBox.value);
+cancelCoffee.addEventListener("click", function() {
+  modalLink.close()
 })
 
 
 
+ //Unsplash images API
+let requestPictures = {
+    method: 'GET',
+    redirect: 'follow'
+  };
 
+// function to render picture from api
+function renderPicture() { 
+  fetch(`https://api.unsplash.com/search/photos?query=${inputEl.value}&client_id=bH1wAkUgvPyBNGKHRuGc7fgTminQz_lAKrUvBpje9yU`, requestPictures)
+    .then(response => response.json())
+    .then((result) => {
+      let urlArray = result.results[0].urls.regular
+      picture.innerHTML = `<img src=${urlArray}>`
+      
+    })
+    .catch(error => console.log('error', error));
+}
 
-
-/*const aboutEl = document.querySelector("#about");
-const  modelEl = document.querySelectorAll(".model");
-
-aboutEl.addEventListener("click", () =>{
-    console.log("click")
-    if(modelEl.style.display === "block"){
-        modelEl.style.display = "none"
-
-    }else{
-        modelEl.style.display = "block"
-    }
-    
-});*/
-
-
-
-/*let myHeaders = new Headers();
-myHeaders.append("X-Api-Key", "26eJIHt/sEgMl68YCYBiog==PB28IcPzdXc4Fe52");
-
+let myHeaders = new Headers();
+myHeaders.append("X-Api-Key", "o71IHicXblHeovfGE0J0pA==FqM55J7liunZHpmV");
 let requestOptions = {
   method: 'GET',
   headers: myHeaders,
   redirect: 'follow'
 };
 
-fetch("https://api.api-ninjas.com/v1/weather?city=London", requestOptions)
+//function to render weather from api
+function renderWeather() {
+  fetch("https://api.api-ninjas.com/v1/weather?city=" + inputEl.value, requestOptions)
   .then(response => response.json())
-  .then(result =>{
-    let humidity =  result.humidity
-    console.log(humidity)
-  }) 
-  .catch(error => console.log('error', error));*/
+  .then(result => {
+    console.log(result)
+    console.log(result.wind_speed)
+    console.log(result.temp)
+    cloudpct.innerHTML = `${result.cloud_pct} okta`
+    humidity.innerHTML = `${result.humidity} %`
+    wind.innerHTML = `${result.wind_speed} km\hr`
+    if (result.humidity < 50) {
+      picture.innerHTML += `<h1 style="color: #fff; position: absolute; top: 5px; right: 5px; font-size: 3rem;"><i class="bi bi-brightness-high-fill"></i><svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-brightness-high-fill" viewBox="0 0 16 16">
+      <path d="M12 8a4 4 0 1 1-8 0 4 4 0 0 1 8 0zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z"/>
+    </svg><span style="font-size: 20px;">${result.temp}℃<span></h1>`
+      console.log('sun')
+      
+    } else if (result.humidity >= 50 && result.humidity <= 60) {
+      picture.innerHTML += `<h1 style="color: #fff; position: absolute; top: 5px; right: 5px; font-size: 3rem;"><i class="bi bi-cloud-sun-fill"></i><svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-cloud-sun-fill" viewBox="0 0 16 16">
+      <path d="M11.473 11a4.5 4.5 0 0 0-8.72-.99A3 3 0 0 0 3 16h8.5a2.5 2.5 0 0 0 0-5h-.027z"/>
+      <path d="M10.5 1.5a.5.5 0 0 0-1 0v1a.5.5 0 0 0 1 0v-1zm3.743 1.964a.5.5 0 1 0-.707-.707l-.708.707a.5.5 0 0 0 .708.708l.707-.708zm-7.779-.707a.5.5 0 0 0-.707.707l.707.708a.5.5 0 1 0 .708-.708l-.708-.707zm1.734 3.374a2 2 0 1 1 3.296 2.198c.199.281.372.582.516.898a3 3 0 1 0-4.84-3.225c.352.011.696.055 1.028.129zm4.484 4.074c.6.215 1.125.59 1.522 1.072a.5.5 0 0 0 .039-.742l-.707-.707a.5.5 0 0 0-.854.377zM14.5 6.5a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1h-1z"/>
+    </svg><span style="font-size: 20px;">${result.temp}℃<span></h1>`
+      console.log('cloud and sun')
+    } else if (result.humidity >= 61 && result.humidity <= 90) {
 
-// function fetchWeather
-  /*function fetchWeather(){
-    fetch("https://api.api-ninjas.com/v1/weather?city=London",{
-      method: "GET",
-      headers: {
-        "X-Api-Key": "26eJIHt/sEgMl68YCYBiog==PB28IcPzdXc4Fe52"
-      } 
+      picture.innerHTML += `<h1 style="color: #fff; position: absolute; top: 5px; right: 5px; font-size: 3rem;"><i class="bi bi-clouds-fill"></i><svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-clouds-fill" viewBox="0 0 16 16">
+      <path d="M11.473 9a4.5 4.5 0 0 0-8.72-.99A3 3 0 0 0 3 14h8.5a2.5 2.5 0 1 0-.027-5z"/>
+      <path d="M14.544 9.772a3.506 3.506 0 0 0-2.225-1.676 5.502 5.502 0 0 0-6.337-4.002 4.002 4.002 0 0 1 7.392.91 2.5 2.5 0 0 1 1.17 4.769z"/>
+    </svg><span style="font-size: 20px;">${result.temp}℃<span></h1>`
+    console.log('cloud')
+    }else {
+      picture.innerHTML += `<h1 style="color: #fff; position: absolute; top: 5px; right: 5px; font-size: 3rem;"><i class="bi bi-cloud-rain-fill"></i><svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-cloud-rain-fill" viewBox="0 0 16 16">
+      <path d="M4.158 12.025a.5.5 0 0 1 .316.633l-.5 1.5a.5.5 0 1 1-.948-.316l.5-1.5a.5.5 0 0 1 .632-.317zm3 0a.5.5 0 0 1 .316.633l-1 3a.5.5 0 1 1-.948-.316l1-3a.5.5 0 0 1 .632-.317zm3 0a.5.5 0 0 1 .316.633l-.5 1.5a.5.5 0 1 1-.948-.316l.5-1.5a.5.5 0 0 1 .632-.317zm3 0a.5.5 0 0 1 .316.633l-1 3a.5.5 0 1 1-.948-.316l1-3a.5.5 0 0 1 .632-.317zm.247-6.998a5.001 5.001 0 0 0-9.499-1.004A3.5 3.5 0 1 0 3.5 11H13a3 3 0 0 0 .405-5.973z"/>
+    </svg><span style="font-size: 20px;">${result.temp}℃<span></h1>`
+    console.log('rain')
+    }
+  })
+  .catch(error => console.log('error', error));
+}
 
-    })
-    .then(res => res.json())
-    .then(weather => weatherFunction(weather))
-    .catch(error => console.log('error', error));
-    
-  }
+//Geoplugin API for location
+//currentLocation.innerHTML = geoplugin_city()
+console.log(geoplugin_city())
 
-   function weatherFunction(weather){
-    console.log(weather)
-    let content = weather.humidity
+//Local location render
+/*
+*This section renders all the info
+* about the current location of the user
+*/
 
-   }
-   fetchWeather();*/
- 
- 
+//cloud
+//time
+const timeNow = new Date()
+let currentTime = timeNow.toLocaleTimeString()
+document.getElementById("time").innerHTML = currentTime
+
+console.log(currentTime)
+//date
+document.getElementById("date").innerHTML = timeNow.toLocaleDateString()
+//temperature
+fetch("https://api.api-ninjas.com/v1/weather?city=" + geoplugin_city(), requestOptions)
+  .then(response => response.json())
+  .then(result => {
+    console.log(result)
+    console.log(result.wind_speed)
+    console.log(result.temp)
+    let tempArea = document.getElementById("temperature")
+    //document.getElementById("temperature").innerHTML = result.temp + "℃"
+    if (result.humidity < 50) {
+      tempArea.innerHTML += `<i class="bi bi-brightness-high-fill"></i><svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-brightness-high-fill" viewBox="0 0 16 16">
+      <path d="M12 8a4 4 0 1 1-8 0 4 4 0 0 1 8 0zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z"/>
+    </svg><span style="font-size: 20px;">${result.temp}℃<span>`
+      console.log('sun')
+      
+    } else if (result.humidity >= 50 && result.humidity <= 60) {
+      tempArea.innerHTML += `<i class="bi bi-cloud-sun-fill"></i><svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-cloud-sun-fill" viewBox="0 0 16 16">
+      <path d="M11.473 11a4.5 4.5 0 0 0-8.72-.99A3 3 0 0 0 3 16h8.5a2.5 2.5 0 0 0 0-5h-.027z"/>
+      <path d="M10.5 1.5a.5.5 0 0 0-1 0v1a.5.5 0 0 0 1 0v-1zm3.743 1.964a.5.5 0 1 0-.707-.707l-.708.707a.5.5 0 0 0 .708.708l.707-.708zm-7.779-.707a.5.5 0 0 0-.707.707l.707.708a.5.5 0 1 0 .708-.708l-.708-.707zm1.734 3.374a2 2 0 1 1 3.296 2.198c.199.281.372.582.516.898a3 3 0 1 0-4.84-3.225c.352.011.696.055 1.028.129zm4.484 4.074c.6.215 1.125.59 1.522 1.072a.5.5 0 0 0 .039-.742l-.707-.707a.5.5 0 0 0-.854.377zM14.5 6.5a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1h-1z"/>
+    </svg><span style="font-size: 20px;">${result.temp}℃<span>`
+      console.log('cloud and sun')
+    } else if (result.humidity >= 61 && result.humidity <= 90) {
+
+      tempArea.innerHTML += `<i class="bi bi-clouds-fill"></i><svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-clouds-fill" viewBox="0 0 16 16">
+      <path d="M11.473 9a4.5 4.5 0 0 0-8.72-.99A3 3 0 0 0 3 14h8.5a2.5 2.5 0 1 0-.027-5z"/>
+      <path d="M14.544 9.772a3.506 3.506 0 0 0-2.225-1.676 5.502 5.502 0 0 0-6.337-4.002 4.002 4.002 0 0 1 7.392.91 2.5 2.5 0 0 1 1.17 4.769z"/>
+    </svg><span style="font-size: 20px;">${result.temp}℃<span>`
+    console.log('cloud')
+    }else {
+      tempArea.innerHTML += `<i class="bi bi-cloud-rain-fill"></i><svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-cloud-rain-fill" viewBox="0 0 16 16">
+      <path d="M4.158 12.025a.5.5 0 0 1 .316.633l-.5 1.5a.5.5 0 1 1-.948-.316l.5-1.5a.5.5 0 0 1 .632-.317zm3 0a.5.5 0 0 1 .316.633l-1 3a.5.5 0 1 1-.948-.316l1-3a.5.5 0 0 1 .632-.317zm3 0a.5.5 0 0 1 .316.633l-.5 1.5a.5.5 0 1 1-.948-.316l.5-1.5a.5.5 0 0 1 .632-.317zm3 0a.5.5 0 0 1 .316.633l-1 3a.5.5 0 1 1-.948-.316l1-3a.5.5 0 0 1 .632-.317zm.247-6.998a5.001 5.001 0 0 0-9.499-1.004A3.5 3.5 0 1 0 3.5 11H13a3 3 0 0 0 .405-5.973z"/>
+    </svg><span style="font-size: 20px;">${result.temp}℃<span>`
+    console.log('rain')
+    }
+    }
+  )
+  .catch(error => console.log('error', error));
+
+//city
+
+document.getElementById("city").innerHTML = geoplugin_city()
+
+//country
+document.getElementById("country").innerHTML = geoplugin_countryName()
+
+//search button event listener
+buttonEl.addEventListener("click", function() {
+  renderWeather()
+  renderPicture()
+  currentLocation.innerHTML = inputEl.value.toUpperCase()
+  console.log(geoplugin_city())
+})
 
 
+const now = new Date()
 
+const currentTime2 = now.toLocaleTimeString()
+console.log(currentTime)
